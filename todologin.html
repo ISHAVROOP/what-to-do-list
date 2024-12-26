@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-image: url('https://i.pinimg.com/originals/0b/25/d4/0b25d4b58528277b205dc45665c098e3.jpg'); 
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white; /* Set text color to white */
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 3em;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.529);
+        }
+        .card {
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background for cards */
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            max-width: 350px;
+            margin: 0 auto;
+            perspective: 1000px; /* Add perspective */
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+
+            border: 1px solid #fff; /* White border for cards */
+            backdrop-filter: blur(10px); /* Apply blur effect to the background */
+        }
+
+        .card.flip {
+    transform: rotateY(180deg);
+}
+
+@keyframes flipCard {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(180deg);
+    }
+}
+
+.flip {
+    animation: flipCard 0.6s ease-in-out forwards;
+}
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            scale: 1.02;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="tel"] {
+            width: calc(100% - 22px);
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent light background for input fields */
+            color: #fff; /* Set input field text color to white */
+        }
+
+        button {
+            width: calc(100% - 22px);
+            padding: 12px;
+            margin: 20px 0;
+            border: none;
+            border-radius: 6px;
+            background: linear-gradient(to right, #6a5acd, #a370f0); /* Update button gradient colors */
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #8178d1, #b18cf6); /* Update hover button gradient colors */
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        a {
+            color: #b18cf6; /* Update link color */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .deleteBtn {
+            color: #ff0000;
+            border: none;
+            background: none;
+            font-size: 1.5em;
+            margin-left: 10px;
+            transition: transform 0.3s;
+        }
+
+        .deleteBtn:hover {
+            color: #cc0000;
+            transform: scale(1.1);
+        }
+
+        .card {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .twinkling-stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .twinkling-stars span {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="twinkling-stars"></div>
+   
+    <div class="container">
+        <div class="card">
+            <h1>Galaxy Task Manager</h1>
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <h2>Login</h2>
+                <input type="text" id="loginUsername" placeholder="Username" required><br>
+                <input type="password" id="loginPassword" placeholder="Password" required><br>
+                <button type="submit">Login</button>
+            </form>
+            <form id="signupForm" style="display: none;" onsubmit="return handleSignup(event)">
+                <h2>Sign Up</h2>
+                <input type="text" id="fullName" placeholder="Full Name" required><br>
+                <input type="text" id="signupUsername" placeholder="Username" required><br>
+                <input type="email" id="email" placeholder="Email" required><br>
+                <input type="text" id="dob" placeholder="Date of Birth" required><br>
+                <input type="tel" id="phone" placeholder="Phone Number" required><br>
+                <input type="password" id="signupPassword" placeholder="Password" required><br>
+                <button type="submit">Sign up</button>
+            </form>
+            <p id="toggleMessage">Don't have an account? <a href="#" onclick="toggleForms()">Sign up</a></p>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            var loginUsername            = document.getElementById("loginUsername").value;
+            var loginPassword = document.getElementById("loginPassword").value;
+            
+            var storedUsername = sessionStorage.getItem("signupUsername");
+            var storedPassword = sessionStorage.getItem("signupPassword");
+
+            if (loginUsername === storedUsername && loginPassword === storedPassword) {
+                sessionStorage.setItem('userLoggedIn', true);
+                handleLoginSuccess(); 
+            } else {
+                alert("Invalid username or password. Please try again.");
+            }
+            document.getElementById("loginForm").reset();
+            return false; 
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            var signupUsername = document.getElementById("signupUsername").value;
+            var signupPassword = document.getElementById("signupPassword").value;
+
+            var letterCount = (signupPassword.match(/[a-zA-Z]/g) || []).length;
+            var numberCount = (signupPassword.match(/[0-9]/g) || []).length;
+            if (signupPassword.length < 8 || letterCount < 8 || numberCount < 2) {
+                alert("Password must be at least 8 characters long and contain at least 2 numbers.");
+                return false;
+            }            
+            sessionStorage.setItem('signupUsername', signupUsername);
+            sessionStorage.setItem('signupPassword', signupPassword);
+            document.getElementById("signupForm").reset();
+            toggleForms(); 
+            return false; 
+        }
+
+        function toggleForms() {
+    var loginForm = document.getElementById("loginForm");
+    var signupForm = document.getElementById("signupForm");
+    var toggleMessage = document.getElementById("toggleMessage");
+    var card = document.querySelector(".card");
+
+    card.classList.toggle("flip");
+
+    setTimeout(function() {
+        loginForm.style.display = loginForm.style.display === "none" ? "block" : "none";
+        signupForm.style.display = signupForm.style.display === "none" ? "block" : "none";
+        toggleMessage.innerHTML = loginForm.style.display === "none" ? "Already have an account? <a href=\"#\" onclick=\"toggleForms()\">Login</a>" : "Don't have an account? <a href=\"#\" onclick=\"toggleForms()\">Sign up</a>";
+    }, 100); // Wait for the animation to complete (0.6s)
+}
+        function handleLoginSuccess() {
+            window.location.href = 'WHATTODO.html'; 
+        }
+     
+        const twinklingStars = document.querySelector('.twinkling-stars');
+        const numStars = 2000; // Adjust the number of stars as desired
+
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('span');
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.animationDelay = `${Math.random() * 5}s`; // Random animation delay
+            twinklingStars.appendChild(star);
+        }
+    </script>
+</body>
+</html>
+

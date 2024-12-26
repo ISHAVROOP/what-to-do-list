@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Galaxy Task Manager</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            color: white;
+            overflow: hidden;
+            background-image: url('https://images.unsplash.com/photo-1528571418557-664a69926796?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            }
+
+        .container {
+    max-width: 800px;
+    margin: 100px auto;
+    padding: 20px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(255, 255, 255, 0.1) 100%) repeat;
+    background-size: 20px 20px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        margin: 50px auto;
+    }
+}
+        h1 {
+            margin-top: 0;
+            font-size: 3em;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.529);
+        }
+        
+
+        input[type="text"] {
+    width: 70%;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ddd;
+    font-family: inherit;
+    font-size: 1em;
+    backdrop-filter: blur(10px);
+    transition: background 0.3s;
+}
+
+
+        input[type="text"]:focus {
+            outline: none;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(255, 255, 255, 0.1) 100%) repeat;
+    background-size: 10px 10px;
+        }
+
+        button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(45deg, #8e44ad, #3498db);
+    color: white;
+    font-family: inherit;
+    font-size: 1em;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: linear-gradient(45deg, #8e44ad, #3498db, #8e44ad);
+    background-size: 400% 400%;
+    animation: celestialGlow 10s ease infinite;
+}
+@keyframes celestialGlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    input[type="text"] {
+        width: 100%;
+        font-size: 0.9em;
+    }
+
+    button {
+        font-size: 0.9em;
+    }
+}
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .deleteBtn {
+    color: #000; /* Set the color to black */
+    border: none;
+    background: radial-gradient(circle, #333, #000); /* Add a radial gradient to create a black hole effect */
+    font-size: 1.2em;
+    margin-left: 10px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    transition: color 0.3s, transform 0.3s;
+}
+@keyframes blackHoleAnimation {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+        .deleteBtn:hover {
+            color: #ff0000;
+            transform: scale(1.2);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+
+        li {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: slideIn 0.5s ease forwards;
+    background: radial-gradient(circle, rgba(255, 165, 0, 0.4), rgba(255, 0, 0, 0.2), rgba(0, 0, 255, 0.3));
+}
+
+@media (max-width: 768px) {
+    li {
+        padding: 8px;
+    }
+}
+
+        li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        li.completed {
+            background-color: rgba(0, 128, 0, 0.2);
+            color: #ddd;
+            text-shadow: 0 0 5px rgba(0, 128, 0, 0.5);
+        }
+
+        .tick {
+    font-size: 20px;
+    color: #00ff00;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    display: none;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.tick.show::before {
+    content: "\1F6F9"; /* Rocket icon */
+}
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    color: #ddd;
+    text-align: center;
+    animation: zoomIn 0.5s ease forwards;
+    max-width: 500px; /* Add this line */
+    margin: 10% auto; /* Modify this line */
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 80%; /* Add this line */
+        margin: 20% auto; /* Add this line */
+    }
+}
+
+        @keyframes zoomIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .close {
+            color: #ff6347;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 99, 71, 0.5);
+            transition: color 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #ff0000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .priority-high {
+            color: #ff6347;
+            text-shadow: 0 0 5px rgba(255, 99, 71, 0.5);
+        }
+
+        .priority-medium {
+            color: #ffa500;
+            text-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
+        }
+
+        .priority-low {
+            color: #00ff00;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+        }
+
+        .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-top: 20px;
+    background: transparent;
+    backdrop-filter: blur(10px); /* Add a blur effect to create a subtle glow */
+    
+  
+    animation: floatingNav 5s infinite alternate;
+}
+@keyframes floatingNav {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+.nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.nav ul li {
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .nav {
+        padding: 5px;
+    }
+
+    .nav ul li {
+        font-size: 14px;
+    }
+}
+
+        .nav ul li a {
+            display: block;
+            color: #ddd;
+            text-align: center;
+            text-decoration: none;
+            transition: color 0.3s, transform 0.3s;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            position: relative;
+    overflow: hidden;
+        }
+
+        .nav ul li a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2));
+    transition: left 0.5s ease;
+}
+
+.nav ul li a:hover::before {
+    left: 100%;
+}
+        #prioritySelect {
+            margin-bottom: 20px;
+       
+        }
+
+        #prioritySelect label {
+    margin-right: 5px;
+    font-size: 14px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+#prioritySelect input[type="radio"] {
+    cursor: pointer;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    outline: none;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+@media (max-width: 768px) {
+    #prioritySelect label {
+        font-size: 12px;
+    }
+
+    #prioritySelect input[type="radio"] {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+        #prioritySelect input[type="radio"]:checked {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+
+        #prioritySelect input[type="radio"]:hover {
+            border-color: #fff;
+        }
+
+        #prioritySelect label {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        #taskList {
+            color: #ddd;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        .logo img {
+    height: 50px; /* Adjust the size as needed */
+}
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.twinkling-stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.twinkling-stars span {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: #fff;
+    border-radius: 50%;
+    animation: twinkle 1s infinite;
+}
+@keyframes shootingStar {
+    0% {
+        opacity: 1;
+        transform: translateX(-100%) rotate(45deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(200%) rotate(45deg);
+    }
+}
+.shooting-star {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #fff 0%, rgba(255, 255, 255, 0.6) 60%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    animation: shootingStar 1s ease-in-out forwards;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+    transform: translate(-30%, -30%);
+}
+    </style>
+</head>
+<body>
+      
+    <div class="twinkling-stars">
+        <!-- Stars will be generated dynamically using JavaScript -->
+    </div>
+    <nav class="nav">
+        <div class="logo">
+            <img src="https://media4.giphy.com/media/l5JbspfwZ0yjHjlJ0K/200w.gif?cid=6c09b9525krtgqlfkuy5u9kuyki7d487rng973g5ohb4g9vf&ep=v1_gifs_search&rid=200w.gif&ct=g" alt="Celestial Logo">
+        </div>
+        <ul>
+            <li><a href="#" onclick="signOut()">Sign Out</a></li>
+        </ul>
+    </nav>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Login/Signup</h2>
+            <p>Please login or signup to access the Galaxy Task Manager.</p>
+            <button onclick="openLoginForm()">Login/Signup</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Galaxy Task Manager</h1>
+
+
+        <input type="text" id="taskInput" placeholder="Add new task...">
+        <br>
+        <br>
+        <div id="prioritySelect">
+            <label><input type="radio" name="priority" value="high"> High</label>
+            <label><input type="radio" name="priority" value="medium"> Medium</label>
+            <label><input type="radio" name="priority" value="low"> Low</label>
+        </div>
+
+        <button onclick="addTask()">Add</button>
+
+        <ul id="taskList"></ul>
+        <input type="text" id="searchInput" placeholder="Search tasks...">
+    </div>
+
+   
+    <script>
+        let taskList = document.getElementById('taskList');
+        let searchInput = document.getElementById('searchInput');
+        window.onload = function() {
+    let userLoggedIn = sessionStorage.getItem('userLoggedIn');
+    if (!userLoggedIn) {
+        openModal();
+    } 
+};
+function addTask() {
+    let userLoggedIn = sessionStorage.getItem('userLoggedIn');
+    if (!userLoggedIn) {
+        openModal();
+        return;
+    }
+
+    let taskInput = document.getElementById('taskInput');
+    let taskText = taskInput.value.trim();
+
+    if (taskText === '') {
+        alert('Please enter a task before adding.');
+        return;
+    }
+
+    let li = document.createElement('li');
+    let tick = document.createElement('span');
+    tick.innerHTML = '&#10003;';
+    tick.className = 'tick';
+
+    let deleteBtn = document.createElement('button');
+    deleteBtn.innerHTML = '<i class="fas fa-meteor"></i>';
+    deleteBtn.className = 'deleteBtn';
+    deleteBtn.addEventListener('click', function(event) {
+        event.stopPropagation();
+        li.style.animation = 'blackHoleAnimation 0.5s ease forwards';
+        setTimeout(function() {
+            li.remove();
+        }, 500);
+    });
+
+    let taskContent = document.createElement('p');
+    taskContent.innerText = taskText;
+    taskContent.setAttribute('contenteditable', 'true');
+    taskContent.addEventListener('blur', function() {
+        taskText = taskContent.innerText.trim();
+    });
+    taskContent.addEventListener('blur', function() {
+        let newText = taskContent.innerText.trim();
+        if (newText === '') {
+            li.remove();
+        } else {
+            taskText = newText;
+        }
+    });
+
+    li.appendChild(taskContent);
+    li.appendChild(tick);
+    li.appendChild(deleteBtn);
+
+    li.addEventListener('click', function() {
+    if (!li.classList.contains('completed')) {
+        li.classList.add('completed');
+
+        // Create a shooting star effect
+        const shootingStar = document.createElement('div');
+        shootingStar.classList.add('shooting-star');
+        li.appendChild(shootingStar);
+
+        // Show the tick icon
+        tick.classList.add('show');
+
+        // Remove the shooting star after the animation completes
+        setTimeout(() => {
+            li.removeChild(shootingStar);
+        }, 1000);
+    } else {
+        li.classList.remove('completed');
+        tick.classList.remove('show');
+    }
+});
+
+    taskList.appendChild(li);
+    taskInput.value = '';
+    let priorityRadioButtons = document.querySelectorAll('input[name="priority"]');
+    let priority;
+    priorityRadioButtons.forEach(function(radioButton) {
+        if (radioButton.checked) {
+            priority = radioButton.value;
+        }
+    });
+
+    li.classList.add('priority-' + priority);
+    
+}
+
+        function openModal() {
+            document.getElementById('myModal').style.display = 'block';
+        }
+    
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+    
+        function openLoginForm() {
+            closeModal();
+            window.location.href = 'todologin.html';
+        }
+    
+        function signOut() {
+            
+            sessionStorage.removeItem('userLoggedIn');
+            window.location.reload(); 
+        }
+    
+        function filterTasks() {
+            let filter = searchInput.value.toUpperCase();
+            let tasks = taskList.getElementsByTagName('li');
+            for (let i = 0; i < tasks.length; i++) {
+                let taskText = tasks[i].textContent.toUpperCase();
+                if (taskText.indexOf(filter) > -1) {
+                    tasks[i].style.display = '';
+                } else {
+                    tasks[i].style.display = 'none';
+                }
+            }
+        }
+        
+        searchInput.addEventListener('input', filterTasks);
+        function generateRandomStars() {
+    const stars = document.querySelectorAll('.star');
+    stars.forEach((star) => {
+        const topOffset = `${Math.random() * 100}vh`;
+        const fallDuration = `${Math.random() * 6000 + 3000}ms`;
+        const fallDelay = `${Math.random() * 6000}ms`;
+
+        star.style.setProperty('--top-offset', topOffset);
+        star.style.setProperty('--fall-duration', fallDuration);
+        star.style.setProperty('--fall-delay', fallDelay);
+    });
+}
+
+// window.onload = function() {
+//     let userLoggedIn = sessionStorage.getItem('userLoggedIn');
+//     if (!userLoggedIn) {
+//         openModal();
+//     }
+
+//     // Call the generateRandomStars function
+//     generateRandomStars();
+// };
+
+const twinklingStars = document.querySelector('.twinkling-stars');
+    const numStars = 400; // Adjust the number of stars as desired
+
+    for (let i = 0; i < numStars; i++) {
+        const star = document.createElement('span');
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.animationDelay = `${Math.random() * 5}s`; // Random animation delay
+        twinklingStars.appendChild(star);
+    }
+    </script>
+    
+</body>
+</html>
